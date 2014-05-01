@@ -1,0 +1,106 @@
+<html>
+<head>
+	<title></title>
+	<style>
+#sketch {
+	border:1px solid #000;
+}
+</style>
+</head>
+<body>
+<canvas id="sketch" width="480" height="720">
+</canvas>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', main);
+var sketch;
+var context;
+var go_right=false;
+var go_left=false;
+var rectangle;
+var dx = 2;
+var dy = 2;
+var fps = 10;
+var score=0;
+var circle 
+fps=10;
+
+function main() {
+	sketch = document.getElementById('sketch');
+	context = sketch.getContext("2d");
+	context.font = "bold 12px sans-serif";
+	context.fillText('score', 500, 200);
+	rectangle= {'x':200, 'y':700, 'w':80, 'h':20};
+	setInterval(animate, fps);	
+	circle= {'x':25, 'y':sketch.offsetHeight / 2, 'r':25};
+	document.addEventListener('keydown', function(event) {
+		if(event.keyCode === 39) {
+			go_right = true;
+		}
+if(event.keyCode === 37) {
+			go_left = true;
+		}
+		
+	});
+	document.addEventListener('keyup', function(event) {
+		if(event.keyCode === 39) {
+			go_right = false;
+		}
+		if(event.keyCode === 37) {
+			go_left = false;
+		}
+});
+}
+function draw_circle(x, y, r) {
+	context.beginPath();
+	context.arc(x, y, r, 0, 2 * Math.PI, true);
+	context.closePath();
+	context.fill();
+}
+function draw_rect(x, y, w, h) {
+context.fillRect(x, y, w, h)
+}
+function animate() {
+	context.clearRect(0, 0, sketch.offsetWidth, sketch.offsetHeight);
+if (rectangle.x<=0){
+	go_left=false;
+}
+if (rectangle.x>=400){
+	go_right=false;
+}
+if(go_right){
+	rectangle.x=rectangle.x+5;
+}
+if(go_left){
+	rectangle.x=rectangle.x-5;
+}
+	draw_rect(rectangle.x,rectangle.y,rectangle.w,rectangle.h);
+
+	draw_circle(circle.x, circle.y, circle.r);
+	circle.x = circle.x + dx;
+	circle.y = circle.y + dy;
+	if(circle.x > sketch.offsetWidth - 25){
+		dx=dx*-1;
+		circle.x = sketch.offsetWidth-25;
+	}
+	else if(circle.x < 0 + 25){
+		dx=dx*-1;
+		circle.x = 25;
+	}
+	if(circle.y > sketch.offsetHeight){
+	clearInterval(animation)
+	}
+	if (circle.y<circle.r){
+	dy=dy*-1;
+	}
+	if(circle.y>= sketch.offsetHeight-circle.r && circle.x<=rectangle.x+80 && circle.x-circle.r>=rectangle.x){
+		dy=dy*-1;
+		score=score+1;
+	}
+}
+
+
+
+
+</script>
+</body>
+</html>
